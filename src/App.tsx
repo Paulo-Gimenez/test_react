@@ -1,19 +1,29 @@
-import { useState, useEffect } from 'react'
-import Counter from './components/Counter'
-import UserList from './components/UserList'
-import TodoList from './components/TodoList'
-import useLocalStorage from './hooks/useLocalStorage'
+import { useState, useEffect } from "react"
+import Counter from "./components/Counter"
+import UserList from "./components/UserList"
+import TodoList from "./components/TodoList"
+import useLocalStorage from "./hooks/useLocalStorage"
+import { useTodos } from "./hooks/useTodos"
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('counter')
-  const [theme, setTheme] = useLocalStorage<string>('theme', 'light')
+  const [activeTab, setActiveTab] = useState<string>("counter")
+  const [theme, setTheme] = useLocalStorage<string>("theme", "light")
+  const {
+    todos,
+    filter,
+    filteredTodos,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    setFilter,
+  } = useTodos()
 
   useEffect(() => {
     document.title = `React Debug Test - ${activeTab}`
   }, [activeTab])
 
   const handleThemeToggle = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    setTheme(prev => (prev === "light" ? "dark" : "light"))
   }
 
   return (
@@ -26,22 +36,22 @@ export default function App() {
           </button>
         </div>
 
-        <nav style={{ margin: '20px 0' }}>
+        <nav style={{ margin: "20px 0" }}>
           <button
-            className={`button ${activeTab === 'counter' ? 'active' : ''}`}
-            onClick={() => setActiveTab('counter')}
+            className={`button ${activeTab === "counter" ? "active" : ""}`}
+            onClick={() => setActiveTab("counter")}
           >
             Counter
           </button>
           <button
-            className={`button ${activeTab === 'users' ? 'active' : ''}`}
-            onClick={() => setActiveTab('users')}
+            className={`button ${activeTab === "users" ? "active" : ""}`}
+            onClick={() => setActiveTab("users")}
           >
             Users
           </button>
           <button
-            className={`button ${activeTab === 'todos' ? 'active' : ''}`}
-            onClick={() => setActiveTab('todos')}
+            className={`button ${activeTab === "todos" ? "active" : ""}`}
+            onClick={() => setActiveTab("todos")}
           >
             Todos
           </button>
@@ -49,9 +59,21 @@ export default function App() {
       </header>
 
       <main>
-        {activeTab === 'counter' && <Counter />}
-        {activeTab === 'users' && <UserList />}
-        {activeTab === 'todos' && <TodoList />}
+        {activeTab === "counter" && <Counter />}
+        {activeTab === "users" && <UserList />}
+        {activeTab === "todos" && (
+          <TodoList
+            todos={filteredTodos}
+            totalTodos={todos.length}
+            activeCount={todos.filter(t => !t.completed).length}
+            completedCount={todos.filter(t => t.completed).length}
+            filter={filter}
+            onAddTodo={addTodo}
+            onToggleTodo={toggleTodo}
+            onDeleteTodo={deleteTodo}
+            onChangeFilter={setFilter}
+          />
+        )}
       </main>
     </div>
   )
