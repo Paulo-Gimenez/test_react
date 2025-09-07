@@ -30,9 +30,18 @@ Componente TodoList:
       -Filtrado (all, active, completed) gestionado desde el hook, haciendo el componente 100% presentacional.
       -Nombres claros y consistentes, facilitando lectura y testing.
       -Compatible con TypeScript y reusable en distintos contextos.
+
 Hook useTodos
     Cambios realizados:
-      -Encapsula toda la lógica de los todos: agregar, eliminar, toggle, filtrado y persistencia en localStorage.
-      -Maneja el estado filter (all | active | completed) para que el componente TodoList sea 100% presentacional.
-      -Devuelve filteredTodos y contadores (totalTodos, activeCount, completedCount) para simplificar renderizado en UI.
-      -Estado inmutable y seguro.
+      - Encapsula toda la lógica de los todos: agregar, eliminar, toggle, filtrado y persistencia en localStorage.
+      - Maneja el estado filter (all | active | completed) para que el componente TodoList sea 100% presentacional.
+      - Devuelve filteredTodos y contadores (totalTodos, activeCount, completedCount) para simplificar renderizado en UI.
+      - Estado inmutable y seguro.
+
+Userlist component refactor
+   - debounce reduce el número de renders al buscar.
+   - Uso de useMemo para memorizar filteredUsers.
+   - Código más legible, desacoplado y optimizado.
+   - No se muta el estado original directamente (splice → filter).
+   - Tipado completo en TypeScript para evitar errores.
+   - funcionamiento correcto de delete
