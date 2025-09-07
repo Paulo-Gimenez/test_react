@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Counter from './components/Counter'
 import UserList from './components/UserList'
 import TodoList from './components/TodoList'
 import useLocalStorage from './hooks/useLocalStorage'
 
-function App() {
-  const [activeTab, setActiveTab] = useState('counter')
-  const [theme, setTheme] = useLocalStorage('theme', 'light')
-  
+export default function App() {
+  const [activeTab, setActiveTab] = useState<string>('counter')
+  const [theme, setTheme] = useLocalStorage<string>('theme', 'light')
+
   useEffect(() => {
     document.title = `React Debug Test - ${activeTab}`
-  })
+  }, [activeTab])
 
   const handleThemeToggle = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
@@ -21,28 +21,25 @@ function App() {
       <header>
         <h1>React Debug Test</h1>
         <div>
-          <button 
-            className="button" 
-            onClick={handleThemeToggle}
-          >
+          <button className="button" onClick={handleThemeToggle}>
             Toggle Theme ({theme})
           </button>
         </div>
-        
+
         <nav style={{ margin: '20px 0' }}>
-          <button 
+          <button
             className={`button ${activeTab === 'counter' ? 'active' : ''}`}
             onClick={() => setActiveTab('counter')}
           >
             Counter
           </button>
-          <button 
+          <button
             className={`button ${activeTab === 'users' ? 'active' : ''}`}
             onClick={() => setActiveTab('users')}
           >
             Users
           </button>
-          <button 
+          <button
             className={`button ${activeTab === 'todos' ? 'active' : ''}`}
             onClick={() => setActiveTab('todos')}
           >
@@ -59,5 +56,3 @@ function App() {
     </div>
   )
 }
-
-export default App
