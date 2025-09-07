@@ -1,43 +1,38 @@
-# React Debug Test - Prueba Técnica
+refactor a typescript.
+    cambios: 
+    - refactor a archivos jsx (APP, MAIN, useLocalStorage)
 
-## Descripción
-Esta es una prueba técnica para evaluar habilidades en React, identificación de errores y mejores prácticas de desarrollo.
+entorno de pruebas
+    cambios:
+    -se añadio dependencias como vitest y v8 coverage para testear funciones
 
-## Objetivo
-El candidato debe identificar y corregir **20 errores** presentes en el código de esta aplicación React.
+Componente Counter:
+	cambios
+		-props tipadas y con valores por defecto
+			la idea es que se permita reutilizar el componenete en distintos contextos sin romper tipado
+		-estados fuertementes tipados (podian inferir never[])
+		-el historial controlado, antes ejecutaba en cada render un loop infinito
+			ahora depende de count, el historial solo cambia cuando cambia el contador
+		-estado inmutable, antes mutaba el array.
+			respeta el inmutabilidad de react y evita bugs
+		-conversión explicita en input
+			el estado step siempre manejar un number
+		-manejo seguro en operacion asincronica 
+			evitar errores por estados obsoletos en funciones asincronas
 
-## Instalación y Ejecución
-
-```bash
-npm install
-npm run dev
-```
-
-La aplicación debería ejecutarse en `http://localhost:3000`
-
-## Funcionalidad Esperada
-
-La aplicación contiene tres componentes principales:
-
-1. **Counter**: Un contador con incremento/decremento, historial y funcionalidad asíncrona
-2. **UserList**: Lista de usuarios obtenida de una API con funcionalidad de búsqueda
-3. **TodoList**: Lista de tareas con persistencia en localStorage
-
-
-## Criterios de Evaluación
-
-1. **Identificación de errores** (50%)
-2. **Corrección adecuada** (30%)
-3. **Explicación de la solución** (10%)
-4. **Mejoras adicionales** (10%)
-
-
-## Entrega
-- Código corregido, subido a un repositorio publico.
-- Documento explicando cada error encontrado y su solución.
-- Sugerencias de mejoras.
-
-## Notas
-- La aplicación debe funcionar completamente sin errores en consola
-- Se valorará el uso de mejores prácticas de React
-- Se puede refactorizar el código para mejorar la legibilidad y mantenibilidad
+Componente TodoList:
+    Cambios realizados:
+      -Props tipadas y fuertes (todos, onAddTodo, onToggleTodo, onDeleteTodo, filter, onChangeFilter, totalTodos, -activeCount,completedCount).
+      -Estado interno mínimo (newTodoText) y tipado como string.
+      -Historial/filtrado calculado desde props para evitar loops y renderizados innecesarios.
+      -Estado inmutable: nunca se muta directamente todos.
+      -Separación de responsabilidades: lógica de negocio encapsulada en hook useTodos.
+      -Filtrado (all, active, completed) gestionado desde el hook, haciendo el componente 100% presentacional.
+      -Nombres claros y consistentes, facilitando lectura y testing.
+      -Compatible con TypeScript y reusable en distintos contextos.
+Hook useTodos
+    Cambios realizados:
+      -Encapsula toda la lógica de los todos: agregar, eliminar, toggle, filtrado y persistencia en localStorage.
+      -Maneja el estado filter (all | active | completed) para que el componente TodoList sea 100% presentacional.
+      -Devuelve filteredTodos y contadores (totalTodos, activeCount, completedCount) para simplificar renderizado en UI.
+      -Estado inmutable y seguro.
